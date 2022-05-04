@@ -1,0 +1,109 @@
+<html>
+
+<head>
+
+<script>
+
+function main() {
+	let tankElement = document.getElementById("tank");
+	let bulletCounter = 0;
+	let keyStates = {};
+	
+	document.onkeydown = function(e) {
+		keyStates[e.code] = true;
+		
+		if (e.code === "Space") {
+			shootBullet(bulletCounter);
+			bulletCounter++;
+		}
+	}
+	
+	document.onkeyup = function(e) {
+		keyStates[e.code] = false;
+	}
+	
+	setInterval( () => {
+	
+		let bullets = document.getElementsByClassName('bullet');
+			
+		Array.from(bullets).forEach( (bulletElement) => {
+			let bulletLeft = parseInt(bulletElement.style.left);
+			bulletElement.style.left = ( bulletLeft - 20 ) + 'px';
+		});
+		
+		if (keyStates.ArrowLeft === true) {
+			moveTank('left', 10);
+		}
+		if (keyStates.ArrowRight === true) {
+			moveTank('right', 5);
+		}
+		if (keyStates.ArrowUp === true) {
+			moveTank('up', 5);
+		}
+		if (keyStates.ArrowDown === true) {
+			moveTank('down', 5);
+		}
+		
+	}, 33 );
+	
+	function shootBullet(bulletCounter) {
+			
+		// Create element bullet
+		let tankLeft = parseInt(tankElement.style.left);
+		let tankTop = parseInt(tankElement.style.top);
+		
+		let bulletElement = document.createElement('div');
+		bulletElement.style.height = '4px';
+		bulletElement.style.width = '10px';
+		bulletElement.style["background-color"] = "red";
+		bulletElement.style.top = (tankTop + 18) + 'px';
+		bulletElement.style.left = (tankLeft - 30) + 'px';
+		bulletElement.style.position = "absolute";
+		bulletElement.classList.add("bullet");
+
+		document.body.appendChild(bulletElement);
+	}
+	
+	function moveTank(direction, distance) {
+
+		if (direction === 'left') {
+			let tankLeft = parseInt(tankElement.style.left);
+			tankElement.style.left = ( tankLeft - distance ) + 'px';
+		}
+		
+		if (direction === 'right') {
+			let tankLeft = parseInt(tankElement.style.left);
+			tankElement.style.left = ( tankLeft + distance ) + 'px';
+		}
+		
+		if (direction === 'up') {
+			let tankTop = parseInt(tankElement.style.top);
+			tankElement.style.top = ( tankTop - distance ) + 'px';
+		}
+		
+		if (direction === 'down') {
+			let tankTop = parseInt(tankElement.style.top);
+			tankElement.style.top = ( tankTop + distance ) + 'px';
+		}
+	}
+	
+}
+</script>
+
+
+</head>
+
+
+<body>
+<div id="tank" style="height: 40px; width: 50px; background-color: blue; position: absolute; top: 200px; left: 300px;" >
+	<div id="gun" style="height: 4px; width: 30px; background-color: blue; top:18px; left: -30px; position: absolute;"></div>
+</div>
+
+</body>
+
+<script>
+main();
+</script>
+
+
+</html>
